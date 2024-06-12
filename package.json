@@ -1,0 +1,70 @@
+{
+  "name": "hardhat-ts",
+  "version": "1.0.0",
+  "description": "nft launchpad",
+  "main": "index.js",
+  "author": "gtandes",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.7",
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.8",
+    "@openzeppelin/contracts": "^5.0.2",
+    "@openzeppelin/contracts-upgradeable": "^5.0.2",
+    "@openzeppelin/hardhat-upgrades": "^3.1.1",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^4.3.16",
+    "@types/fs-extra": "^11.0.4",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.14.2",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "ethers": "^6.13.0",
+    "fs-extra": "^11.2.0",
+    "hardhat": "^2.22.5",
+    "hardhat-deploy": "^0.12.4",
+    "lodash": "^4.17.21",
+    "mocha": "^10.4.0",
+    "rimraf": "^5.0.7",
+    "ts-generator": "^0.1.1",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2",
+    "typescript": "^5.4.5"
+  },
+  "files": [
+    "contracts"
+  ],
+  "keywords": [
+    "blockchain",
+    "ethers",
+    "ethereum",
+    "hardhat",
+    "smart-contracts",
+    "solidity",
+    "template",
+    "typescript",
+    "typechain"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rimraf ./artifacts ./cache ./coverage ./types ./coverage.json && bun run typechain",
+    "compile": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat compile",
+    "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"test/**/*.ts\" && bun run typechain",
+    "deploy:contracts": "hardhat deploy",
+    "lint": "bun run lint:sol && bun run lint:ts && bun run prettier:check",
+    "lint:sol": "solhint --max-warnings 0 \"contracts/**/*.sol\"",
+    "lint:ts": "eslint --ignore-path ./.eslintignore --ext .js,.ts .",
+    "postcompile": "bun run typechain",
+    "prettier:check": "prettier --check \"**/*.{js,json,md,sol,ts,yml}\"",
+    "prettier:write": "prettier --write \"**/*.{js,json,md,sol,ts,yml}\"",
+    "task:deployLock": "hardhat task:deployLock",
+    "task:withdraw": "hardhat task:withdraw",
+    "test": "hardhat test",
+    "typechain": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat typechain"
+  }
+}
