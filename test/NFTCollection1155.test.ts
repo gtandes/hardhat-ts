@@ -2,10 +2,11 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
 import { ContractFactory } from "ethers";
+import { NFTCollection1155 } from "../types";
 
 describe("NFTCollection1155", function () {
   let NFTCollection1155: ContractFactory;
-  let nftCollection: any;
+  let nftCollection: NFTCollection1155;
   let owner: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
@@ -21,7 +22,7 @@ describe("NFTCollection1155", function () {
   beforeEach(async function () {
     NFTCollection1155 = await ethers.getContractFactory("NFTCollection1155");
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-    nftCollection = await NFTCollection1155.deploy();
+    nftCollection = await NFTCollection1155.deploy() as NFTCollection1155;
     await nftCollection.waitForDeployment();
     await nftCollection.initialize(
       name,
@@ -186,7 +187,7 @@ describe("NFTCollection1155", function () {
       ).to.be.revertedWithCustomError(nftCollection, "OwnableUnauthorizedAccount");
 
       await nftCollection.connect(addr1).mint(addr1.address, tokenId, amount, "0x", tokenURI);
-      
+
       expect(await nftCollection.totalMinted()).to.equal(amount);
     });
   });

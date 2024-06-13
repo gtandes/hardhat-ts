@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
+
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
-import { ContractFactory, EventFragment, EventLog } from "ethers";
-import { IERC721 } from "../types";
+import { ContractFactory, EventFragment, EventLog, Log } from "ethers";
+import { NFTCollection721, NFTFactory } from "../types";
 
 describe("createERC721Collection", function () {
   let NFTFactory: ContractFactory;
   let NFTCollection721: ContractFactory;
-  let nftFactory: any;
-  let nftCollection721: any;
+  let nftFactory: NFTFactory;
+  let nftCollection721: NFTCollection721;
   let owner: SignerWithAddress;
   let admin: SignerWithAddress;
   let addr1: SignerWithAddress;
@@ -26,12 +27,12 @@ describe("createERC721Collection", function () {
     NFTFactory = await ethers.getContractFactory("NFTFactory");
     NFTCollection721 = await ethers.getContractFactory("NFTCollection721");
     [owner, admin, addr1, addr2, ...addrs] = await ethers.getSigners();
-    nftFactory = await NFTFactory.deploy();
+    nftFactory = await NFTFactory.deploy() as NFTFactory;
     await nftFactory.waitForDeployment();
     await nftFactory.initialize();
 
     // Deploy the ERC721 collection template
-    nftCollection721 = await NFTCollection721.deploy();
+    nftCollection721 = await NFTCollection721.deploy() as NFTCollection721;
     await nftCollection721.waitForDeployment();
   });
 
@@ -125,9 +126,8 @@ describe("createERC721Collection", function () {
       const iface = new ethers.Interface(eventAbi);
 
       // Find the log entry for the event
-      const log = receipt.logs.find(
-        (log: { topics: (EventFragment | null)[]; }) => log.topics[0] === iface.getEvent("ERC721CollectionCreated")
-        // (log: EventLog) => log.topics[0] === iface.getEvent("ERC721CollectionCreated")
+      const log = receipt?.logs.find(
+        (log: Log) => log.topics[0] === iface.getEventName("ERC721CollectionCreated")
       );
 
       if (!log) {

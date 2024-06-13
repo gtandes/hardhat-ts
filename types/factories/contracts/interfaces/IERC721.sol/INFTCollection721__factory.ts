@@ -6,7 +6,7 @@ import { Contract, Interface, type ContractRunner } from "ethers";
 import type {
   INFTCollection721,
   INFTCollection721Interface,
-} from "../../../../contracts/interfaces/INFTCollection721";
+} from "../../../../contracts/interfaces/IERC721.sol/INFTCollection721";
 
 const _abi = [
   {

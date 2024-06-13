@@ -48,7 +48,7 @@ export type { ReentrancyGuard } from "./@openzeppelin/contracts/utils/Reentrancy
 export { ReentrancyGuard__factory } from "./factories/@openzeppelin/contracts/utils/ReentrancyGuard__factory";
 export type { Strings } from "./@openzeppelin/contracts/utils/Strings";
 export { Strings__factory } from "./factories/@openzeppelin/contracts/utils/Strings__factory";
-export type { INFTCollection721 } from "./contracts/interfaces/INFTCollection721";
+export type { INFTCollection721 } from "./contracts/interfaces/IERC721.sol/INFTCollection721";
 export { INFTCollection721__factory } from "./factories/contracts/interfaces/IERC721.sol/INFTCollection721__factory";
 export type { INFTCollection1155 } from "./contracts/interfaces/INFTCollection1155";
 export { INFTCollection1155__factory } from "./factories/contracts/interfaces/INFTCollection1155__factory";

@@ -1,14 +1,14 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
-import { ContractFactory, EventFragment, EventLog } from "ethers";
-import { IERC1155 } from "../types";
+import { ContractFactory, EventFragment, EventLog, Log } from "ethers";
+import { NFTCollection1155, NFTFactory } from "../types";
 
 describe("createERC1155Collection", function () {
   let NFTFactory: ContractFactory;
   let NFTCollection1155: ContractFactory;
-  let nftFactory: any;
-  let nftCollection1155: any;
+  let nftFactory: NFTFactory;
+  let nftCollection1155: NFTCollection1155;
   let owner: SignerWithAddress;
   let admin: SignerWithAddress;
   let addr1: SignerWithAddress;
@@ -26,12 +26,12 @@ describe("createERC1155Collection", function () {
     NFTFactory = await ethers.getContractFactory("NFTFactory");
     NFTCollection1155 = await ethers.getContractFactory("NFTCollection1155");
     [owner, admin, addr1, addr2, ...addrs] = await ethers.getSigners();
-    nftFactory = await NFTFactory.deploy();
+    nftFactory = await NFTFactory.deploy() as NFTFactory;
     await nftFactory.waitForDeployment();
     await nftFactory.initialize();
 
     // Deploy the ERC1155 collection template
-    nftCollection1155 = await NFTCollection1155.deploy();
+    nftCollection1155 = await NFTCollection1155.deploy() as NFTCollection1155;
     await nftCollection1155.waitForDeployment();
   });
 
@@ -125,9 +125,8 @@ describe("createERC1155Collection", function () {
       const iface = new ethers.Interface(eventAbi);
 
       // Find the log entry for the event
-      const log = receipt.logs.find(
-        (log: { topics: (EventFragment | null)[]; }) => log.topics[0] === iface.getEvent("ERC1155CollectionCreated")
-        // (log: EventLog) => log.topics[0] === iface.getEvent("ERC1155CollectionCreated")
+      const log = receipt?.logs.find(
+        (log: Log) => log.topics[0] === iface.getEventName("ERC1155CollectionCreated")
       );
 
 

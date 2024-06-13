@@ -2,10 +2,11 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
 import { ContractFactory } from "ethers";
+import { NFTCollection721 } from "../types";
 
 describe("NFTCollection721", function () {
   let NFTCollection721: ContractFactory;
-  let nftCollection: any;
+  let nftCollection: NFTCollection721;
   let owner: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
@@ -22,7 +23,7 @@ describe("NFTCollection721", function () {
     NFTCollection721 = await ethers.getContractFactory("NFTCollection721");
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
     
-    nftCollection = await NFTCollection721.deploy();
+    nftCollection = await NFTCollection721.deploy() as NFTCollection721;
     await nftCollection.waitForDeployment();
     await nftCollection.initialize(
       name,
