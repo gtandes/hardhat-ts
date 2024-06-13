@@ -1,12 +1,14 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
+import { EventFragment, EventLog } from "ethers";
+import { IERC721 } from "../types";
 
 describe("createERC721Collection", function () {
-  let NFTFactory: ethers.ContractFactory;
-  let NFTCollection721: ethers.ContractFactory;
-  let nftFactory: ethers.Contract;
-  let nftCollection721: ethers.Contract;
+  let NFTFactory: any;
+  let NFTCollection721: any;
+  let nftFactory: any;
+  let nftCollection721: IERC721;
   let owner: SignerWithAddress;
   let admin: SignerWithAddress;
   let addr1: SignerWithAddress;
@@ -111,6 +113,8 @@ describe("createERC721Collection", function () {
       );
 
       const receipt = await tx.wait();
+      // console.log("Transaction receipt:", receipt);
+      // console.log("Logs:", receipt.logs);
 
       // Define the event ABI
       const eventAbi = [
@@ -118,11 +122,12 @@ describe("createERC721Collection", function () {
       ];
 
       // Create an interface with the event ABI
-      const iface = new ethers.utils.Interface(eventAbi);
+      const iface = new ethers.Interface(eventAbi);
 
       // Find the log entry for the event
       const log = receipt.logs.find(
-        log => log.topics[0] === iface.getEventTopic("ERC721CollectionCreated")
+        (log: { topics: (EventFragment | null)[]; }) => log.topics[0] === iface.getEvent("ERC721CollectionCreated")
+        // (log: EventLog) => log.topics[0] === iface.getEvent("ERC721CollectionCreated")
       );
 
       if (!log) {
@@ -132,15 +137,17 @@ describe("createERC721Collection", function () {
 
       // Parse the log entry
       const event = iface.parseLog(log);
+      // console.log("Event:", event);
+
 
       expect(event).to.not.be.undefined;
-      const collectionAddress = event.args.collectionAddress;
-      expect(event.args.owner).to.equal(addr1.address);
-      expect(event.args.name).to.equal(name);
-      expect(event.args.symbol).to.equal(symbol);
-      expect(event.args.description).to.equal(description);
-      expect(event.args.maxSupply).to.equal(maxSupply);
-      expect(event.args.royaltyFeeNumerator).to.equal(royaltyFeeNumerator);
+      const collectionAddress = event?.args.collectionAddress;
+      expect(event?.args.owner).to.equal(addr1.address);
+      expect(event?.args.name).to.equal(name);
+      expect(event?.args.symbol).to.equal(symbol);
+      expect(event?.args.description).to.equal(description);
+      expect(event?.args.maxSupply).to.equal(maxSupply);
+      expect(event?.args.royaltyFeeNumerator).to.equal(royaltyFeeNumerator);
 
       const project = await nftFactory.submittedProjects(collectionAddress);
       expect(project.details).to.equal(`Collection: ${name} - ${description}`);

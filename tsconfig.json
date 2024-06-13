@@ -6,7 +6,11 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": [
+      "node",
+      "mocha"
+    ]
   },
   "exclude": [
     "node_modules"
@@ -15,10 +19,10 @@
     "./hardhat.config.ts"
   ],
   "include": [
-    "src/**/*",
     "tasks/**/*",
     "test/**/*",
     "deploy/**/*",
-    "types/"
+    "types/",
+    "scripts/**/*"
   ]
 }

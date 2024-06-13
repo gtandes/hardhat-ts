@@ -1,16 +1,19 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
+import { EventFragment, EventLog } from "ethers";
+import { IERC1155 } from "../types";
 
 describe("createERC1155Collection", function () {
-  let NFTFactory;
-  let NFTCollection1155;
-  let nftFactory;
-  let nftCollection1155;
-  let owner;
-  let admin;
-  let addr1;
-  let addr2;
-  let addrs;
+  let NFTFactory: any;
+  let NFTCollection1155: any;
+  let nftFactory: any;
+  let nftCollection1155: IERC1155;
+  let owner: SignerWithAddress;
+  let admin: SignerWithAddress;
+  let addr1: SignerWithAddress;
+  let addr2: SignerWithAddress;
+  let addrs: SignerWithAddress[];
 
   const projectDetails = "Test Project";
   const name = "My ERC1155 Collection";
@@ -123,8 +126,10 @@ describe("createERC1155Collection", function () {
 
       // Find the log entry for the event
       const log = receipt.logs.find(
-        log => log.topics[0] === iface.getEvent("ERC1155CollectionCreated")
+        (log: { topics: (EventFragment | null)[]; }) => log.topics[0] === iface.getEvent("ERC1155CollectionCreated")
+        // (log: EventLog) => log.topics[0] === iface.getEvent("ERC1155CollectionCreated")
       );
+
 
       if (!log) {
         console.error("ERC1155CollectionCreated event not found in the logs");

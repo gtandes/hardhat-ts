@@ -1,13 +1,14 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
 
 describe("NFTCollection1155", function () {
-  let NFTCollection1155;
-  let nftCollection;
-  let owner;
-  let addr1;
-  let addr2;
-  let addrs;
+  let NFTCollection1155: any;
+  let nftCollection: any;
+  let owner: SignerWithAddress;
+  let addr1: SignerWithAddress;
+  let addr2: SignerWithAddress;
+  let addrs: SignerWithAddress[];
 
   const name = "My NFT Collection";
   const symbol = "MNFT";

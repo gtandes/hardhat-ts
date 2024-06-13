@@ -1,11 +1,10 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { Contract, ContractFactory } from "ethers";
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
 
 describe("NFTCollection721", function () {
-  let NFTCollection721: ContractFactory;
-  let nftCollection: Contract;
+  let NFTCollection721: any;
+  let nftCollection: any;
   let owner: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
@@ -23,7 +22,7 @@ describe("NFTCollection721", function () {
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
     
     nftCollection = await NFTCollection721.deploy();
-    await nftCollection.deployed();
+    await nftCollection.waitForDeployment();
     await nftCollection.initialize(
       name,
       symbol,
@@ -91,7 +90,7 @@ describe("NFTCollection721", function () {
   describe("Token Sale", function () {
     it("Should set token sale price", async function () {
       const tokenId = 1;
-      const price = ethers.utils.parseEther("1"); // 1 Ether
+      const price = ethers.parseEther("1"); // 1 Ether
 
       await nftCollection.setTokenSalePrice(tokenId, price);
       expect(await nftCollection.tokenSalePrice(tokenId)).to.equal(price);
@@ -99,7 +98,7 @@ describe("NFTCollection721", function () {
 
     it("Should revert if token sale price is out of bounds", async function () {
       const tokenId = 1;
-      const price = ethers.utils.parseEther("300"); // 300 Ether
+      const price = ethers.parseEther("300"); // 300 Ether
 
       await expect(
         nftCollection.setTokenSalePrice(tokenId, price)
@@ -147,7 +146,7 @@ describe("NFTCollection721", function () {
       // Try minting with a non-owner account and expect a revert
       await expect(
         nftCollection.connect(addr1).mint(addr1.address, tokenId, tokenURI)
-      ).to.be.revertedWith("Ownable: caller is not the owner");
+      ).to.be.revertedWithCustomError(nftCollection, "OwnableUnauthorizedAccount");
     });
 
     it("Should allow owner to transfer ownership", async function () {
@@ -163,7 +162,7 @@ describe("NFTCollection721", function () {
 
       await expect(
         nftCollection.mint(addr1.address, tokenId, tokenURI)
-      ).to.be.revertedWith("Ownable: caller is not the owner");
+      ).to.be.revertedWithCustomError(nftCollection, "OwnableUnauthorizedAccount");
 
       await nftCollection.connect(addr1).mint(addr1.address, tokenId, tokenURI);
 

@@ -1,7 +1,7 @@
 import { HardhatUserConfig, vars } from "hardhat/config";
+
 import type { NetworkUserConfig } from "hardhat/types";
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomiclabs/hardhat-ethers";
 import "@openzeppelin/hardhat-upgrades";
 import "hardhat-deploy";
 
