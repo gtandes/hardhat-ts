@@ -1,9 +1,10 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
+import { ContractFactory } from "ethers";
 
 describe("NFTCollection1155", function () {
-  let NFTCollection1155: any;
+  let NFTCollection1155: ContractFactory;
   let nftCollection: any;
   let owner: SignerWithAddress;
   let addr1: SignerWithAddress;

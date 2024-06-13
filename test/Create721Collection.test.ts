@@ -1,14 +1,14 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/dist/src/signer-with-address";
-import { EventFragment, EventLog } from "ethers";
+import { ContractFactory, EventFragment, EventLog } from "ethers";
 import { IERC721 } from "../types";
 
 describe("createERC721Collection", function () {
-  let NFTFactory: any;
-  let NFTCollection721: any;
+  let NFTFactory: ContractFactory;
+  let NFTCollection721: ContractFactory;
   let nftFactory: any;
-  let nftCollection721: IERC721;
+  let nftCollection721: any;
   let owner: SignerWithAddress;
   let admin: SignerWithAddress;
   let addr1: SignerWithAddress;
